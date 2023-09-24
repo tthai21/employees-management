@@ -7,32 +7,7 @@ interface employeesState {
 }
 
 const initialState: employeesState = {
-  Employees: [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "johndoe@gmail.com",
-      mobile: "123456789",
-      department: "Development",
-      role: "Administrator",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "janesmith@gmail.com",
-      mobile: "123456789",
-      department: "Quality Assurance",
-      role: "Manager",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      email: "bobjohnson@gmail.com",
-      mobile: "123456789",
-      department: "Project Management",
-      role: "Developer",
-    },
-  ],
+  Employees: [],
   loading: false,
   error: null,
 };

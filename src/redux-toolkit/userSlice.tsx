@@ -1,19 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface userState {
-  user: user | null;
+  user: userResponse | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: userState = {
-  user: {
-    name: "Alex",
-    email: "alex@gmail",
-    mobile: "123456789",
-    department: "Development",
-    role: "Administrator",
-  },
+  user: null,
   loading: false,
   error: null,
 };
@@ -22,7 +16,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userUpdateState: (state, action: PayloadAction<user>) => {
+    userUpdateState: (state, action: PayloadAction<userResponse | null>) => {
       state.loading = false;
       state.user = action.payload;
     },

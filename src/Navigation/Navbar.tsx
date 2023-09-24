@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux-toolkit/store";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { userUpdateState } from "../redux-toolkit/userSlice";
+import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 interface NavbarProps {
   // onSignIn: () => void;
@@ -13,16 +15,31 @@ const Navbar: React.FC<NavbarProps> = () => {
   //   const query = event.target.value;
   //   onSearch(query);
   // };
-  const user = useSelector((state: RootState) => state.user.user);
-  const [currentUser, setCurrentUser] = useState<user | null>(null);
+  const [currentUser, setCurrentUser] = useState<userResponse | null>(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token: string | null = localStorage.getItem("token");
 
-  const SignIn = () => {
-    if (user) {
-      setCurrentUser(user);
+  useEffect(() => {
+    if (token) {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      const userResponse: userResponse = {
+        name: decodedToken.unique_name,
+        email: decodedToken.email,
+        role: decodedToken.role,
+      };
+      dispatch(userUpdateState(userResponse));
+      setCurrentUser(userResponse);
     }
-  };
+  }, [token, dispatch]);
+
+  const SignIn = () => {};
+
   const SignOut = () => {
     setCurrentUser(null);
+    dispatch(userUpdateState(null));
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
