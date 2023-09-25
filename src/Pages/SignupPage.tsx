@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../utils/axios";
-import { AxiosResponse } from "axios";
 // import axios from "../utils/axios";
+import { AxiosResponse } from "axios";
+import  axios  from "../utils/axios";
 
 const schemaValidation = yup.object({
   name: yup
@@ -52,9 +52,13 @@ const SignupPage: React.FC = () => {
     department: string;
     role: string;
   }) => {
-    const REGISTER_URL = "api/Auth/register";
+    const REGISTER_URL = "/Auth/register";
     try {
-      const response: AxiosResponse = await axios.post(REGISTER_URL, values);
+      console.log(values);
+      const response: AxiosResponse = await axios.post(
+        REGISTER_URL,
+        values
+      );
       navigate("/");
       return response?.data;
     } catch (error: unknown) {

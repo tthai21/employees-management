@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addEmployeeState } from "../redux-toolkit/allEmployeeSlice";
 import AddEmployeeForm from "./Employee/AddEmployeeForm";
-import axios from "../utils/axios";
+import  axios  from "../utils/axios";
 
 const AddEmployee: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const AddEmployee: React.FC = () => {
       [name]: value,
     }));
   };
-  const ADDEMPLOYEE_URL = "Employees/add-employee";
+  const ADDEMPLOYEE_URL = "/Employees/add-employee";
   const token: string | null = localStorage.getItem("token");
   const headers = {
     "Content-Type": "application/json",

@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../utils/axios";
 import jwtDecode from "jwt-decode";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { userUpdateState } from "../redux-toolkit/userSlice";
 import { useEffect } from "react";
+import axios from "../utils/axios";
 
 const schemaValidation = yup.object({
   email: yup
@@ -52,7 +52,7 @@ const LoginPage: React.FC = () => {
   });
 
   const submitHandler = async (values: { email: string; password: string }) => {
-    const LOGIN_URL = "/api/Auth/login";
+    const LOGIN_URL = "/Auth/login";
     console.log(values);
 
     if (isValid) {

@@ -44,7 +44,7 @@ const AddEmployee: React.FC = () => {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`, // Use 'Bearer' before the token
   };
-  const UPDATEEMPLOYEE_URL = "Employees/edit/employeeId";
+  const UPDATEEMPLOYEE_URL = "/Employees/edit/employeeId";
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

@@ -1,6 +1,5 @@
-// Export Axios instance for making HTTP requests
+/* eslint-disable react-refresh/only-export-components */
 import axios from "axios";
-// eslint-disable-next-line react-refresh/only-export-components
 export default axios.create({
-  baseURL: "http://localhost:5045/",
+  baseURL: "https://e-management.azurewebsites.net/",
 });
