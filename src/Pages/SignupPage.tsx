@@ -52,13 +52,11 @@ const SignupPage: React.FC = () => {
     department: string;
     role: string;
   }) => {
-    console.log(values);
     const REGISTER_URL = "api/Auth/register";
     try {
       const response: AxiosResponse = await axios.post(REGISTER_URL, values);
-      console.log(response?.data);
-      return response?.data;
       navigate("/");
+      return response?.data;
     } catch (error: unknown) {
       console.error(error);
     }

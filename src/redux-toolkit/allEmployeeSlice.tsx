@@ -24,8 +24,14 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.Employees = [...state.Employees, action.payload];
     },
+    removeEmployeeState: (state, action: PayloadAction<Employee>) => {
+      state.loading = false;
+      state.Employees = state.Employees.filter(
+        (e) => e.id != action.payload.id
+      );
+    },
   },
 });
 
-export const { employeesUpdateState, addEmployeeState } =
+export const { employeesUpdateState, addEmployeeState, removeEmployeeState } =
   employeesSlice.actions;

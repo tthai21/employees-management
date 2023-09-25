@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { userUpdateState } from "../redux-toolkit/userSlice";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { searchUpdateState } from "../redux-toolkit/searchSlice";
 
 interface NavbarProps {
   // onSignIn: () => void;
@@ -11,11 +12,9 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = () => {
-  // const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const query = event.target.value;
-  //   onSearch(query);
-  // };
   const [currentUser, setCurrentUser] = useState<userResponse | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token: string | null = localStorage.getItem("token");
@@ -32,6 +31,14 @@ const Navbar: React.FC<NavbarProps> = () => {
       setCurrentUser(userResponse);
     }
   }, [token, dispatch]);
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearch = () => {
+    dispatch(searchUpdateState(searchQuery));
+  };
 
   const SignIn = () => {};
 
@@ -59,11 +66,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             <li className="nav-item">
               <button onClick={SignOut}>Sign Out</button>
             </li>
-          ) : (
-            <li className="nav-item">
-              <button onClick={SignIn}>Sign In</button>
-            </li>
-          )}
+          ) : null}
         </ul>
         <div>
           <ul className="flex space-x-12 text-xl">
@@ -78,11 +81,11 @@ const Navbar: React.FC<NavbarProps> = () => {
           <input
             type="text"
             placeholder="Search..."
-            // onChange={handleSearch}
+            onChange={onChangeHandler}
             className="px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
-            onClick={() => {}}
+            onClick={handleSearch}
             className="px-4 py-2 text-white bg-blue-500 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Search

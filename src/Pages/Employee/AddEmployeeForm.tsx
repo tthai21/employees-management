@@ -7,6 +7,7 @@ interface AddEmployeeFormProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   employee: {
+    id: number | null;
     name: string | null;
     email: string | null;
     mobile: string | null;
@@ -27,6 +28,12 @@ const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({
     <>
       <h2 className="mb-4 text-xl font-semibold text-center">{title}</h2>
       <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className="hidden"
+          value={employee.id || ""}
+          onChange={handleChange}
+        />
         <div className="mb-4">
           <label
             className="block mb-2 text-sm font-bold text-gray-700"

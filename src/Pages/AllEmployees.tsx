@@ -5,6 +5,9 @@ import NavbarSub from "../Navigation/NavbarSub";
 import Employee from "./Employee/Employee";
 import EmployeesTable from "./Employee/EmployeesTable";
 import FetchAllEmployees from "../redux-toolkit/FetchAllEmployees";
+import axios from "../utils/axios";
+import { removeEmployeeState } from "../redux-toolkit/allEmployeeSlice";
+import { useDispatch } from "react-redux";
 
 const AllEmployees: React.FC = () => {
   const [sort, setSort] = useState<string>("All Employees");
@@ -18,6 +21,9 @@ const AllEmployees: React.FC = () => {
   const employees: Employee[] = useSelector(
     (state: RootState) => state.employees.Employees
   );
+  const search: string | null = useSelector(
+    (state: RootState) => state.search.search
+  );
 
   // Handle change in the select input
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -29,7 +35,7 @@ const AllEmployees: React.FC = () => {
   useEffect(() => {
     const filteredEmployees = () => {
       switch (sort) {
-        case "ALl Employees":
+        case "All Employees":
           setSortEmployees(employees);
           break;
         case "Development":
@@ -137,6 +143,60 @@ const AllEmployees: React.FC = () => {
     filteredEmployees();
   }, [sort, employees]);
 
+  useEffect(() => {
+    const searchEmployee = sortEmployees?.filter((employee) =>
+      employeeMatchesSearch(employee, search)
+    );
+    if (searchEmployee != null) {
+      setSortEmployees(searchEmployee);
+    }
+  }, [search]);
+
+  const employeeMatchesSearch = (employee: user, search: string | null) => {
+    // Check if any employee property contains the search query
+    if (employee != null && search != null) {
+      return (
+        employee.name?.toLowerCase().includes(search?.toLowerCase()) ||
+        employee.email?.toLowerCase().includes(search?.toLowerCase()) ||
+        employee.mobile?.toLowerCase().includes(search?.toLowerCase()) ||
+        employee.department?.toLowerCase().includes(search?.toLowerCase()) ||
+        employee.role?.toLowerCase().includes(search?.toLowerCase())
+      );
+    }
+  };
+
+  const token: string | null = localStorage.getItem("token");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const dispatch = useDispatch();
+
+  const RemoveEmployee = async (employee: Employee) => {
+    const employeeId = Number(employee.id);
+
+    if (isNaN(employeeId)) {
+      console.error("Invalid employee ID format");
+      return;
+    }
+
+    const REMOVEEMPLOYEE_URL = `/Employees/remove/employeeId?id=${employeeId}`;
+    try {
+      const response = await axios.post(
+        REMOVEEMPLOYEE_URL,
+        employeeId.toString(),
+        {
+          headers,
+        }
+      );
+      dispatch(removeEmployeeState(employee));
+      alert(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <NavbarSub handleChange={handleChange}></NavbarSub>
@@ -144,7 +204,10 @@ const AllEmployees: React.FC = () => {
         <EmployeesTable></EmployeesTable>
         {sortEmployees?.map((employee) => (
           <React.Fragment key={employee.id}>
-            <Employee employee={employee}></Employee>
+            <Employee
+              employee={employee}
+              RemoveEmployee={RemoveEmployee}
+            ></Employee>
           </React.Fragment>
         ))}
       </div>

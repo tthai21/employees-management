@@ -3,10 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 interface AppProps {
   employee: Employee;
+  RemoveEmployee: (employee: Employee) => Promise<void>;
 }
 
-const Employee: React.FC<AppProps> = ({ employee }) => {
+const Employee: React.FC<AppProps> = ({ employee, RemoveEmployee }) => {
   const navigate = useNavigate();
+
+  const handleRemoveClick = async () => {
+    try {
+      await RemoveEmployee(employee);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="grid w-screen h-12 grid-cols-6 gap-4 mt-4">
@@ -23,7 +33,7 @@ const Employee: React.FC<AppProps> = ({ employee }) => {
             Edit
           </button>
           <button
-            // onClick={() => onRemove(employee.id)}
+            onClick={handleRemoveClick}
             className="px-4 py-2 text-white bg-red-500 rounded"
           >
             Remove

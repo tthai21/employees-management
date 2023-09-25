@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux-toolkit/store";
 import { useParams } from "react-router-dom";
 import AddEmployeeForm from "./Employee/AddEmployeeForm";
+import { AxiosResponse } from "axios";
+import axios from "../utils/axios";
 
 const AddEmployee: React.FC = () => {
   const [employee, setEmployee] = useState<Employee>({
@@ -37,9 +39,25 @@ const AddEmployee: React.FC = () => {
       [name]: value,
     }));
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const token: string | null = localStorage.getItem("token");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`, // Use 'Bearer' before the token
+  };
+  const UPDATEEMPLOYEE_URL = "Employees/edit/employeeId";
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const response: AxiosResponse = await axios.post(
+        UPDATEEMPLOYEE_URL,
+        JSON.stringify(employee),
+        { headers }
+      );
+      alert(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+
     console.log(`Edited employee: ${employee.name} `, employee);
   };
 
