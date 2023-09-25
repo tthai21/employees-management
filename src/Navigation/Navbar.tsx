@@ -40,8 +40,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     dispatch(searchUpdateState(searchQuery));
   };
 
-  const SignIn = () => {};
-
   const SignOut = () => {
     setCurrentUser(null);
     dispatch(userUpdateState(null));
