@@ -5,13 +5,7 @@ import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { searchUpdateState } from "../redux-toolkit/searchSlice";
 
-interface NavbarProps {
-  // onSignIn: () => void;
-  // onSignOut: () => void;
-  // onSearch: (query: string) => void;
-}
-
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<userResponse | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 

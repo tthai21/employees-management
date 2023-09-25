@@ -42,7 +42,7 @@ const AddEmployee: React.FC = () => {
   const token: string | null = localStorage.getItem("token");
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // Use 'Bearer' before the token
+    Authorization: `Bearer ${token}`, 
   };
   const UPDATEEMPLOYEE_URL = "/Employees/edit/employeeId";
   const handleSubmit = async (e: React.FormEvent) => {
