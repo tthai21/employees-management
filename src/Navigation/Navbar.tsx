@@ -8,6 +8,8 @@ import { searchUpdateState } from "../redux-toolkit/searchSlice";
 const Navbar: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<userResponse | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  console.log("🚀 ~ file: Navbar.tsx:12 ~ isAdmin:", isAdmin);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,6 +25,9 @@ const Navbar: React.FC = () => {
       };
       dispatch(userUpdateState(userResponse));
       setCurrentUser(userResponse);
+      if (userResponse.role === "Administrator") {
+        setIsAdmin(true);
+      }
     }
   }, [token, dispatch]);
 
@@ -38,22 +43,46 @@ const Navbar: React.FC = () => {
     setCurrentUser(null);
     dispatch(userUpdateState(null));
     localStorage.removeItem("token");
+    setIsAdmin(false);
     navigate("/");
   };
 
   return (
     <nav className="px-20 py-2 font-bold text-blue-600 bg-blue-200">
       <div className="flex items-center justify-between">
-        <ul className="flex space-x-12 text-xl">
+        {/* Mobile menus */}
+        <div className="md:hidden flex items-center">
+          <button className="outline-none mobile-menu-button">
+            <svg
+              className="w-6 h-6 text-gray-500"
+              x-show="!showMenu"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+        {/* Menus */}
+        <ul className="hidden space-x-12 text-xl md:flex ">
           <li className="nav-item">
             <a href="/">Home</a>
           </li>
-          <li className="nav-item">
-            <a href="/all-employees">All Employees</a>
-          </li>
-          <li className="nav-item">
-            <a href="/add-employees">Add Employee</a>
-          </li>
+          {isAdmin ? (
+            <>
+              <li className="nav-item">
+                <a href="/all-employees">Employees</a>
+              </li>
+              <li className="nav-item">
+                <a href="/add-employees">Add</a>
+              </li>
+            </>
+          ) : null}
+
           {currentUser ? (
             <li className="nav-item">
               <button onClick={SignOut}>Sign Out</button>
@@ -63,9 +92,7 @@ const Navbar: React.FC = () => {
         <div>
           <ul className="flex space-x-12 text-xl">
             {currentUser ? (
-              <li className="nav-item">
-                Welcome back {currentUser?.name} ({currentUser?.role}) !!!
-              </li>
+              <li className="nav-item">Welcome back {currentUser?.name}!</li>
             ) : null}
           </ul>
         </div>
